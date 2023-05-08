@@ -25,11 +25,9 @@ const benchmark = async () => {
         time: new Date(),
       });
 
-      // await sleep(10) // optional 10 ms delay for normalization testing
+      await sleep(10);
     }
   }
-
-  console.log(messages);
 
   const sizeBins = {};
   messages.forEach(message => {
@@ -47,7 +45,7 @@ const benchmark = async () => {
   const csvData = Object.entries(sizeBins)
     .map(([size, { count, sum }]) => {
       const latencyAvg = sum / count;
-      return `${size / 1_000},${latencyAvg.toFixed(3)}`;
+      return `${size / 1_000},${(latencyAvg / binSize).toFixed(3)}`;
     })
     .filter(line => !line.endsWith(",NaN"))
     .join("\n");

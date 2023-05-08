@@ -26,7 +26,7 @@ ws.on("open", async function open() {
         time: new Date(),
       });
 
-      await sleep(10)
+      await sleep(10);
     }
   }
 
@@ -52,7 +52,7 @@ ws.on("close", function close() {
   const csvData = Object.entries(sizeBins)
     .map(([size, { count, sum }]) => {
       const latencyAvg = sum / count;
-      return `${size / 1_000},${latencyAvg.toFixed(3)}`;
+      return `${size / 1_000},${(latencyAvg / binSize).toFixed(3)}`;
     })
     .filter(line => !line.endsWith(",NaN"))
     .join("\n");
