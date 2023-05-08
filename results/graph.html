@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CSV Data Graph</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+  </head>
+  <body>
+    <input type="file" id="file-input">
+    <div id="graph-container"></div>
+    <script>
+      const fileInput = document.getElementById("file-input");
+      const graphContainer = document.getElementById("graph-container");
+
+      fileInput.addEventListener("change", function () {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          const csv = event.target.result;
+          const data = d3.csvParse(csv, d3.autoType);
+
+          const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+          const width = 700;
+          const height = 500;
+
+          const svg = d3.select(graphContainer)
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+          const x = d3.scaleLinear()
+            .domain(d3.extent(data, d => d.size))
+            .range([0, width]);
+
+          const y = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d.latency)])
+            .range([height, 0]);
+
+          const xAxis = d3.axisBottom(x);
+          const yAxis = d3.axisLeft(y);
+
+          svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+
+          svg.append("g")
+            .call(yAxis);
+
+          svg.selectAll(".point")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("cx", d => x(d.size))
+            .attr("cy", d => y(d.latency))
+            .attr("r", 3)
+            .attr("fill", "steelblue");
+        };
+
+        reader.readAsText(file);
+      });
+    </script>
+  </body>
+</html>

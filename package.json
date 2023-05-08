@@ -1,0 +1,23 @@
+{
+  "name": "benchmarks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "ws-server": "node ./websocket/websocket-server",
+    "ws-benchmark": "node ./websocket/websocket-benchmark",
+    "http-server": "node ./http/http-server",
+    "http-benchmark": "node ./http/http-benchmark"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "canvas": "^2.11.2",
+    "canvas-to-buffer": "^3.0.1",
+    "d3": "^7.8.4",
+    "express": "^4.18.2",
+    "ws": "^8.13.0"
+  }
+}
